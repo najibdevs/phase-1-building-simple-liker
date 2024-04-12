@@ -4,7 +4,29 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+document.addEventListener("DOMContentLoaded", function() {
+  const errorModal = document.querySelector("#modal");
+  const emptyHearts = document.querySelectorAll(".like-glyph");
 
+  emptyHearts.forEach(heart => {
+      heart.addEventListener("click", function() {
+          mimicServerCall()
+              .then(() => {
+                  heart.textContent = FULL_HEART;
+                  heart.classList.add("activated-heart");
+                  heart.classList.remove("empty-heart");
+              })
+              .catch(() => {
+                  errorModal.classList.remove("hidden");
+                  const errorMessage = document.querySelector("#modal p");
+                  errorMessage.textContent = "Server Error. Please try again later.";
+                  setTimeout(() => {
+                      errorModal.classList.add("hidden");
+                  }, 3000); 
+              });
+      });
+  });
+});
 
 
 //------------------------------------------------------------------------------
